@@ -471,6 +471,22 @@
     border-color:#C9BBA7;
   }
   .btn.ghost:hover{background:rgba(28,23,20,.045);opacity:1}
+  .btn.nope{
+    background:transparent;
+    color:var(--ink-soft);
+    border-color:#DCCFBC;
+  }
+  .btn.nope.is-fleeing{
+    position:fixed;
+    z-index:80;
+    margin:0;
+    flex:none;
+    max-width:none;
+    background:var(--paper);
+    transition:left .38s var(--ease), top .38s var(--ease), transform .2s ease;
+  }
+  .btn.nope-spacer{visibility:hidden;pointer-events:none}
+
   .btn[disabled]{cursor:default}
   .btn[disabled]:hover{transform:none;opacity:.55}
 
@@ -665,7 +681,7 @@
       <div class="sticker-inner" style="--delay:3.1s"><svg><use href="#st-heart"/></svg></div>
     </div>
 
-    <p class="eyebrow">для Веры</p>
+    <p class="eyebrow">только для тебя</p>
 
     <div class="date">
       <span class="d">01</span>
@@ -732,16 +748,16 @@
           <span class="num">02</span>
           <span class="head-text">
             <span class="head-time">16:00</span>
-            <span class="head-title">Паста и вино</span>
+            <span class="head-title">Спокойный ужин</span>
             <span class="head-sealed">пока секрет</span>
           </span>
           <span class="chev" aria-hidden="true"></span>
         </button>
         <div class="step-body">
           <div class="step-inner">
-            <p>Пять минут пешком — и мы на втором этаже «Бертгольд-центра». Итальянская кухня, бокал вина и разговоры без спешки. Стол на двоих я забронирую.</p>
+            <p>Пять минут пешком — и мы на втором этаже «Бертгольд-центра». Итальянская кухня и никакой спешки: просто спокойно посидим и поговорим. Стол на двоих я забронирую.</p>
             <div class="addr">
-              <b>Паста и Вино</b><br>
+              <b>Ужин на двоих</b><br>
               ул. Гражданская, 13–15 · «Бертгольд-центр», 2 этаж
             </div>
             <a class="maplink" href="https://yandex.ru/maps/org/pasta_i_vino/29564146474" target="_blank" rel="noopener">Показать на карте <span>→</span></a>
@@ -786,12 +802,13 @@
 
       <div class="finale-inner">
         <div class="fin-orn"><i></i></div>
-        <h2>Ну что, Вера, <em>идёшь?</em></h2>
+        <h2>Ну что, <em>идёшь?</em></h2>
         <p class="sub">Скажи «да» — и я забронирую столик и билеты.</p>
 
         <div class="fin-actions">
           <button class="btn" id="yesBtn" type="button">Да, иду</button>
           <button class="btn ghost" id="icsBtn" type="button">В календарь</button>
+          <button class="btn nope" id="noBtn" type="button">Нет</button>
         </div>
 
         <div class="yes-note" id="yesNote">
@@ -817,13 +834,14 @@ var NOTIFY = {
   telegramToken:  '',
   telegramChatId: '',
 
-  // --- Web3Forms (основной канал) ---
-  // Ключ выдаётся мгновенно на web3forms.com по одному адресу почты.
-  // Без регистрации, без писем активации. 250 писем в месяц бесплатно.
-  web3formsKey: '',
+  // --- Formspree (основной канал) ---
+  // Регистрация на formspree.io, создать форму, скопировать endpoint
+  // вида https://formspree.io/f/xyzabcd и вставить сюда целиком.
+  // 50 писем в месяц бесплатно, статистика — в личном кабинете.
+  formspree: 'https://formspree.io/f/xbgdejpo',
 
-  // --- FormSubmit (запасной, можно оставить пустым) ---
-  formsubmit: ''
+  // --- Web3Forms (запасной) ---
+  web3formsKey: ''
 };
 
 /* ============================================================ */
@@ -1058,7 +1076,23 @@ var NOTIFY = {
       );
     }
 
-    /* --- Web3Forms (основной) --- */
+    /* --- Formspree --- */
+    if (NOTIFY.formspree) {
+      jobs.push(
+        fetch(NOTIFY.formspree, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            'Ответ': answer,
+            'Когда': when(),
+            'Страница': location.href,
+            _subject: 'Ответ на приглашение: ' + answer
+          })
+        }).catch(function (e) { console.warn('Formspree:', e); })
+      );
+    }
+
+    /* --- Web3Forms (запасной) --- */
     if (NOTIFY.web3formsKey) {
       jobs.push(
         fetch('https://api.web3forms.com/submit', {
@@ -1066,7 +1100,7 @@ var NOTIFY = {
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({
             access_key: NOTIFY.web3formsKey,
-            subject: 'Вера ответила на приглашение: ' + answer,
+            subject: 'Ответ на приглашение: ' + answer,
             from_name: 'Приглашение',
             'Ответ': answer,
             'Когда': when(),
@@ -1083,7 +1117,7 @@ var NOTIFY = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({
-            _subject: 'Вера ответила на приглашение: ' + answer,
+            _subject: 'Ответ на приглашение: ' + answer,
             _template: 'table',
             _captcha: 'false',
             'Ответ': answer,
@@ -1126,6 +1160,75 @@ var NOTIFY = {
     });
   });
 
+
+  /* ============================================================
+     КНОПКА «НЕТ» — убегает и ничего не делает
+     ============================================================ */
+  var noBtn = document.getElementById('noBtn');
+  var noPhrases = ['не поймаешь', 'ну нет так нет… шутка', 'мимо!', 'даже не пытайся',
+                   'она стесняется', 'почти получилось', 'ещё разок?', 'нажми «Да» :)'];
+  var noCount = 0;
+  var noSpacer = null;
+
+  function dodge() {
+    var w = noBtn.offsetWidth, h = noBtn.offsetHeight;
+
+    if (!noBtn.classList.contains('is-fleeing')) {
+      var r0 = noBtn.getBoundingClientRect();
+      noSpacer = document.createElement('div');
+      noSpacer.className = 'btn nope-spacer';
+      noSpacer.style.width = r0.width + 'px';
+      noSpacer.style.height = r0.height + 'px';
+      noSpacer.style.flex = '1 1 150px';
+      noSpacer.style.maxWidth = '230px';
+      noBtn.parentNode.insertBefore(noSpacer, noBtn);
+
+      noBtn.style.width = r0.width + 'px';
+      noBtn.style.left = r0.left + 'px';
+      noBtn.style.top = r0.top + 'px';
+      noBtn.classList.add('is-fleeing');
+      void noBtn.offsetWidth;
+    }
+
+    var pad = 12;
+    var maxX = window.innerWidth - w - pad;
+    var maxY = window.innerHeight - h - pad;
+    var yes = yesBtn.getBoundingClientRect();
+    var cur = noBtn.getBoundingClientRect();
+    var x, y, ok, tries = 0;
+
+    do {
+      x = pad + Math.random() * Math.max(0, maxX - pad);
+      y = pad + Math.random() * Math.max(0, maxY - pad);
+      var farFromCur = Math.hypot(x - cur.left, y - cur.top) > 140;
+      var overYes = x < yes.right + 12 && x + w > yes.left - 12 &&
+                    y < yes.bottom + 12 && y + h > yes.top - 12;
+      ok = farFromCur && !overYes;
+      tries++;
+    } while (!ok && tries < 40);
+
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+
+    noCount++;
+    if (noCount % 2 === 0) showToast(noPhrases[(noCount / 2 - 1) % noPhrases.length]);
+  }
+
+  noBtn.addEventListener('pointerenter', function (e) {
+    if (e.pointerType === 'mouse') dodge();
+  });
+  noBtn.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    dodge();
+  });
+  noBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+  window.addEventListener('resize', function () {
+    if (noBtn.classList.contains('is-fleeing')) dodge();
+  });
+
   function burst() {
     var all = ['#st-paw', '#st-heart', '#st-cat', '#st-dog'];
 
@@ -1160,9 +1263,9 @@ var NOTIFY = {
       'DTSTAMP:20261019T090000Z',
       'DTSTART:20261101T125000Z',
       'DTEND:20261101T170000Z',
-      'SUMMARY:Вечер на двоих · Паста и вино + стендап',
+      'SUMMARY:Вечер на двоих · ужин + стендап',
       'LOCATION:Санкт-Петербург, м. Садовая (выход 3) → ул. Гражданская 13-15 → наб. канала Грибоедова 38',
-      'DESCRIPTION:15:50 — сбор у выхода №3 (м. Садовая)\\n16:00 — Паста и Вино, Бертгольд-центр, 2 этаж\\n17:30 — Стендап-клуб на Грибоедова, наб. канала Грибоедова 38',
+      'DESCRIPTION:15:50 — сбор у выхода №3 (м. Садовая)\\n16:00 — спокойный ужин, Бертгольд-центр, 2 этаж\\n17:30 — Стендап-клуб на Грибоедова, наб. канала Грибоедова 38',
       'BEGIN:VALARM',
       'TRIGGER:-PT2H',
       'ACTION:DISPLAY',
