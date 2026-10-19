@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FBF6EE">
-<title>Для Веры · 1 ноября</title>
-<meta property="og:title" content="Для Веры · 1 ноября">
+<title>Приглашение</title>
+<meta property="og:title" content="Приглашение">
 <meta property="og:description" content="Три точки, три часа и очень хорошая компания.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,10 @@
     display:flex;
     justify-content:center;
     padding:clamp(10px,3vw,40px) clamp(10px,3vw,24px);
+    overflow-x:hidden;
   }
+
+  .svg-defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
 
   .stage{
     width:100%;
@@ -55,6 +58,45 @@
     pointer-events:none;
     z-index:2;
     opacity:.75;
+  }
+
+  /* ============ СТИКЕРЫ ============ */
+  .sticker{
+    position:absolute;
+    width:var(--s,52px);
+    height:var(--s,52px);
+    z-index:3;
+    cursor:pointer;
+    opacity:var(--o,1);
+    transform:
+      translate3d(calc(var(--mx,0) * var(--d,12) * 1px),
+                  calc(var(--my,0) * var(--d,12) * 1px), 0)
+      rotate(var(--r,0deg));
+    transition:transform .6s var(--ease), opacity .3s ease;
+    -webkit-tap-highlight-color:transparent;
+    will-change:transform;
+  }
+  .sticker svg{
+    width:100%;height:100%;display:block;
+    filter:drop-shadow(0 5px 9px rgba(120,92,60,.20));
+  }
+  .sticker-inner{
+    width:100%;height:100%;
+    transform-origin:50% 62%;
+    animation:bob 7s ease-in-out infinite;
+    animation-delay:var(--delay,0s);
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-7px) rotate(2.5deg)}
+  }
+  .sticker.is-pet{transition:transform .2s ease}
+  .sticker.is-pet .sticker-inner{animation:wiggle .6s var(--ease)}
+  @keyframes wiggle{
+    0%,100%{transform:rotate(0deg) scale(1)}
+    22%{transform:rotate(-13deg) scale(1.16)}
+    58%{transform:rotate(11deg) scale(1.08)}
+    80%{transform:rotate(-4deg) scale(1.03)}
   }
 
   /* ============ КОНВЕРТ ============ */
@@ -83,7 +125,18 @@
     color:var(--accent);
     font-weight:500;
     margin-bottom:26px;
+    position:relative;
+    z-index:4;
   }
+
+  .intro .date,
+  .intro .weekday,
+  .intro .ornament,
+  .intro .lead,
+  .intro .hint,
+  .intro .cta,
+  .j-head,
+  .steps{position:relative;z-index:4}
 
   .date{
     font-family:'Cormorant Garamond',Georgia,serif;
@@ -179,6 +232,7 @@
   /* ============ ПУТЬ ============ */
   .journey{
     display:none;
+    position:relative;
     padding:clamp(28px,7vw,52px) clamp(22px,6.5vw,50px) clamp(34px,7vw,54px);
     opacity:0;
     transform:translateY(14px);
@@ -243,7 +297,9 @@
     color:var(--gold);
     font-weight:500;
     font-variant-numeric:tabular-nums;
+    transition:transform .3s var(--ease);
   }
+  .step-head:hover .num{transform:scale(1.18) rotate(-6deg)}
   .head-text{display:flex;flex-direction:column;gap:2px;min-width:0}
   .head-time{
     font-size:10.5px;
@@ -267,6 +323,7 @@
     text-transform:uppercase;
     color:#B6A794;
     font-style:italic;
+    display:none;
   }
 
   .chev{
@@ -291,6 +348,7 @@
   .step.locked .head-time,
   .step.locked .head-title{display:none}
   .step.locked .head-sealed{display:block}
+  .step.locked .step-head:hover .num{transform:none}
 
   .step.is-open .chev{transform:rotate(180deg);opacity:.8}
   .step.is-open .head-time{color:var(--accent)}
@@ -342,6 +400,7 @@
 
   /* ============ ФИНАЛ ============ */
   .finale{
+    position:relative;
     max-height:0;
     overflow:hidden;
     opacity:0;
@@ -364,6 +423,8 @@
     font-weight:400;
     line-height:1.15;
     letter-spacing:-.01em;
+    position:relative;
+    z-index:4;
   }
   .finale h2 em{font-style:italic;color:var(--accent)}
   .finale .sub{
@@ -373,6 +434,8 @@
     max-width:30ch;
     margin-left:auto;
     margin-right:auto;
+    position:relative;
+    z-index:4;
   }
 
   .fin-actions{
@@ -381,6 +444,8 @@
     gap:10px;
     justify-content:center;
     margin-top:26px;
+    position:relative;
+    z-index:4;
   }
   .btn{
     flex:1 1 150px;
@@ -407,6 +472,7 @@
   }
   .btn.ghost:hover{background:rgba(28,23,20,.045);opacity:1}
   .btn[disabled]{cursor:default}
+  .btn[disabled]:hover{transform:none;opacity:.55}
 
   .yes-note{
     max-height:0;
@@ -432,7 +498,7 @@
     color:#A2937F;
   }
 
-  /* ============ ИСКРЫ ============ */
+  /* ============ ЛЕТАЮЩИЕ ЧАСТИЦЫ ============ */
   .sparks{
     position:fixed;
     inset:0;
@@ -442,17 +508,66 @@
   }
   .spark{
     position:absolute;
-    width:5px;height:5px;
-    border-radius:50%;
-    background:var(--gold);
+    width:22px;height:22px;
     opacity:0;
-    animation:rise 2.4s var(--ease) forwards;
+    animation:rise 2.6s var(--ease) forwards;
   }
+  .spark svg{width:100%;height:100%;display:block}
   @keyframes rise{
-    0%{opacity:0;transform:translate(0,0) scale(.4)}
-    18%{opacity:.9}
-    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}
+    0%{opacity:0;transform:translate(0,0) scale(.4) rotate(0deg)}
+    16%{opacity:1}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1) rotate(var(--rot,90deg))}
   }
+
+  /* ============ ЛЕТЯЩИЕ СЕРДЕЧКИ ============ */
+  .float{
+    position:fixed;
+    width:16px;height:16px;
+    pointer-events:none;
+    z-index:60;
+    animation:floatUp 1.4s ease-out forwards;
+  }
+  .float svg{width:100%;height:100%;display:block}
+  @keyframes floatUp{
+    0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0deg)}
+    15%{opacity:1}
+    100%{opacity:0;transform:translate(var(--fx,0),-78px) scale(1) rotate(var(--fr,22deg))}
+  }
+
+  /* ============ СЛЕД ОТ ЛАПОК ============ */
+  .trail-paw{
+    position:fixed;
+    width:20px;height:20px;
+    pointer-events:none;
+    z-index:40;
+    opacity:.5;
+    animation:trailFade 1s ease-out forwards;
+  }
+  .trail-paw svg{width:100%;height:100%;display:block}
+  @keyframes trailFade{
+    0%{opacity:.45;transform:rotate(var(--tr,0deg)) scale(.85)}
+    100%{opacity:0;transform:rotate(var(--tr,0deg)) scale(.5) translateY(-10px)}
+  }
+
+  /* ============ ТОСТ ============ */
+  .toast{
+    position:fixed;
+    left:50%;bottom:26px;
+    transform:translate(-50%,16px);
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-style:italic;
+    font-size:17px;
+    padding:10px 24px;
+    border-radius:100px;
+    opacity:0;
+    pointer-events:none;
+    z-index:70;
+    transition:opacity .3s ease, transform .45s var(--ease);
+    white-space:nowrap;
+  }
+  .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
   @media (max-width:400px){
     .step-inner{padding-left:0}
@@ -467,10 +582,89 @@
 </head>
 <body>
 
-<main class="stage">
+<!-- ============ БИБЛИОТЕКА СТИКЕРОВ ============ -->
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- КОТ -->
+    <symbol id="st-cat" viewBox="0 0 64 64">
+      <g stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill">
+        <path d="M14 21 L16 6 L30 15 Z" fill="#EFA96B"/>
+        <path d="M50 21 L48 6 L34 15 Z" fill="#EFA96B"/>
+        <path d="M18.6 17.4 L19.2 10.8 L25.6 15.2 Z" fill="#F6BFB5" stroke="none"/>
+        <path d="M45.4 17.4 L44.8 10.8 L38.4 15.2 Z" fill="#F6BFB5" stroke="none"/>
+        <circle cx="32" cy="34" r="19" fill="#F4B97A"/>
+        <ellipse cx="25" cy="31" rx="2.6" ry="3.2" fill="#3A2B22" stroke="none"/>
+        <ellipse cx="39" cy="31" rx="2.6" ry="3.2" fill="#3A2B22" stroke="none"/>
+        <ellipse cx="19" cy="38.5" rx="3.6" ry="2.3" fill="#F2A79F" stroke="none" opacity=".8"/>
+        <ellipse cx="45" cy="38.5" rx="3.6" ry="2.3" fill="#F2A79F" stroke="none" opacity=".8"/>
+        <path d="M29.2 37.4 h5.6 l-2.8 2.7 Z" fill="#E5807A" stroke="none"/>
+        <path d="M32 40.2 v2.2" fill="none" stroke="#C9846E" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M32 42.4 q-2.6 2.5 -4.6 .2" fill="none" stroke="#C9846E" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M32 42.4 q2.6 2.5 4.6 .2" fill="none" stroke="#C9846E" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M14 34.5 h5.4 M14.6 30.2 l5 1.6 M14.6 38.8 l5 -1.6"
+              fill="none" stroke="#E0A87E" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M50 34.5 h-5.4 M49.4 30.2 l-5 1.6 M49.4 38.8 l-5 -1.6"
+              fill="none" stroke="#E0A87E" stroke-width="1.2" stroke-linecap="round"/>
+      </g>
+    </symbol>
+
+    <!-- ЩЕНОК -->
+    <symbol id="st-dog" viewBox="0 0 64 64">
+      <g stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill">
+        <ellipse cx="13" cy="34" rx="7" ry="12" fill="#A9774F" transform="rotate(-14 13 34)"/>
+        <ellipse cx="51" cy="34" rx="7" ry="12" fill="#A9774F" transform="rotate(14 51 34)"/>
+        <circle cx="32" cy="33" r="18" fill="#D9A46E"/>
+        <ellipse cx="32" cy="41" rx="11" ry="8.5" fill="#F3DEC3"/>
+        <ellipse cx="25" cy="29" rx="2.5" ry="3.1" fill="#3A2B22" stroke="none"/>
+        <ellipse cx="39" cy="29" rx="2.5" ry="3.1" fill="#3A2B22" stroke="none"/>
+        <ellipse cx="32" cy="37.8" rx="3.7" ry="2.9" fill="#4A342A" stroke="none"/>
+        <path d="M32 40.6 v1.8" fill="none" stroke="#B98A5E" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M32 42.4 q-2.4 2.1 -4.2 .1" fill="none" stroke="#B98A5E" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M32 42.4 q2.4 2.1 4.2 .1" fill="none" stroke="#B98A5E" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M30 45 q2 3.4 4 0 q0 3.4 -2 3.4 q-2 0 -2 -3.4 Z" fill="#F09A9A" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- ЛАПКА -->
+    <symbol id="st-paw" viewBox="0 0 64 64">
+      <g stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill" fill="#EFA96B">
+        <ellipse cx="32" cy="43" rx="11" ry="9"/>
+        <ellipse cx="18" cy="27" rx="5.2" ry="6.4" transform="rotate(-16 18 27)"/>
+        <ellipse cx="46" cy="27" rx="5.2" ry="6.4" transform="rotate(16 46 27)"/>
+        <ellipse cx="26" cy="18.5" rx="4.6" ry="5.8" transform="rotate(-6 26 18.5)"/>
+        <ellipse cx="38" cy="18.5" rx="4.6" ry="5.8" transform="rotate(6 38 18.5)"/>
+      </g>
+    </symbol>
+
+    <!-- СЕРДЦЕ -->
+    <symbol id="st-heart" viewBox="0 0 64 64">
+      <path d="M32 52 C10 38 10 20 22 16 C28 14 32 19 32 23 C32 19 36 14 42 16 C54 20 54 38 32 52 Z"
+            fill="#E88C7D" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="stage" id="stage">
 
   <!-- ============ КОНВЕРТ ============ -->
   <section class="intro" id="intro">
+
+    <div class="sticker" style="left:5%;top:13%;--s:58px;--r:-13deg;--d:16">
+      <div class="sticker-inner"><svg><use href="#st-cat"/></svg></div>
+    </div>
+    <div class="sticker" style="right:8%;top:9%;--s:34px;--r:20deg;--d:24;--o:.85">
+      <div class="sticker-inner" style="--delay:1.2s"><svg><use href="#st-paw"/></svg></div>
+    </div>
+    <div class="sticker" style="right:4%;top:43%;--s:50px;--r:11deg;--d:19">
+      <div class="sticker-inner" style="--delay:2.4s"><svg><use href="#st-dog"/></svg></div>
+    </div>
+    <div class="sticker" style="left:8%;bottom:19%;--s:30px;--r:-26deg;--d:26;--o:.9">
+      <div class="sticker-inner" style="--delay:.7s"><svg><use href="#st-paw"/></svg></div>
+    </div>
+    <div class="sticker" style="right:13%;bottom:11%;--s:28px;--r:-9deg;--d:21;--o:.9">
+      <div class="sticker-inner" style="--delay:3.1s"><svg><use href="#st-heart"/></svg></div>
+    </div>
+
     <p class="eyebrow">для Веры</p>
 
     <div class="date">
@@ -489,6 +683,19 @@
 
   <!-- ============ ПУТЬ ============ -->
   <section class="journey" id="journey" aria-label="План вечера">
+
+    <div class="sticker" style="right:2%;top:15%;--s:40px;--r:14deg;--d:15">
+      <div class="sticker-inner" style="--delay:1.6s"><svg><use href="#st-paw"/></svg></div>
+    </div>
+    <div class="sticker" style="left:1%;top:34%;--s:36px;--r:-16deg;--d:20;--o:.85">
+      <div class="sticker-inner" style="--delay:2.9s"><svg><use href="#st-dog"/></svg></div>
+    </div>
+    <div class="sticker" style="right:1.5%;top:52%;--s:30px;--r:22deg;--d:23;--o:.8">
+      <div class="sticker-inner" style="--delay:.9s"><svg><use href="#st-paw"/></svg></div>
+    </div>
+    <div class="sticker" style="left:1%;top:69%;--s:38px;--r:12deg;--d:17;--o:.9">
+      <div class="sticker-inner" style="--delay:3.6s"><svg><use href="#st-cat"/></svg></div>
+    </div>
 
     <header class="j-head">
       <p class="j-date">1 ноября, воскресенье</p>
@@ -569,6 +776,14 @@
 
     <!-- ============ ФИНАЛ ============ -->
     <div class="finale" id="finale">
+
+      <div class="sticker" style="left:2%;top:14%;--s:44px;--r:-18deg;--d:18">
+        <div class="sticker-inner" style="--delay:1.1s"><svg><use href="#st-cat"/></svg></div>
+      </div>
+      <div class="sticker" style="right:3%;top:20%;--s:38px;--r:15deg;--d:22">
+        <div class="sticker-inner" style="--delay:2.6s"><svg><use href="#st-dog"/></svg></div>
+      </div>
+
       <div class="finale-inner">
         <div class="fin-orn"><i></i></div>
         <h2>Ну что, Вера, <em>идёшь?</em></h2>
@@ -591,6 +806,7 @@
 </main>
 
 <div class="sparks" id="sparks" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ============================================================
@@ -598,15 +814,16 @@
    Пустая строка = канал выключен.
    ============================================================ */
 var NOTIFY = {
-  // --- Telegram (не используется, можно заполнить позже) ---
   telegramToken:  '',
   telegramChatId: '',
 
-  // --- Email через FormSubmit.co ---
-  // Сейчас тут твой настоящий адрес — нужен для активации.
-  // После активации FormSubmit выдаст строку-алиас: замени на неё,
-  // чтобы адрес не был виден в исходнике страницы.
-  formsubmit: 'dimanchik8485@gmail.com'
+  // --- Web3Forms (основной канал) ---
+  // Ключ выдаётся мгновенно на web3forms.com по одному адресу почты.
+  // Без регистрации, без писем активации. 250 писем в месяц бесплатно.
+  web3formsKey: '',
+
+  // --- FormSubmit (запасной, можно оставить пустым) ---
+  formsubmit: ''
 };
 
 /* ============================================================ */
@@ -614,15 +831,24 @@ var NOTIFY = {
 (function () {
   'use strict';
 
+  var stage    = document.getElementById('stage');
   var intro    = document.getElementById('intro');
   var journey  = document.getElementById('journey');
   var startBtn = document.getElementById('startBtn');
   var steps    = Array.prototype.slice.call(document.querySelectorAll('.step'));
   var countEl  = document.getElementById('count');
   var finale   = document.getElementById('finale');
-  var opened   = 0;
+  var sparks   = document.getElementById('sparks');
+  var toastEl  = document.getElementById('toast');
 
-  /* ---------- конверт → план ---------- */
+  var opened = 0;
+
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ============================================================
+     КОНВЕРТ → ПЛАН
+     ============================================================ */
   startBtn.addEventListener('click', function () {
     intro.classList.add('is-gone');
     window.setTimeout(function () { intro.style.display = 'none'; }, 600);
@@ -632,7 +858,9 @@ var NOTIFY = {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ---------- раскрытие точки ---------- */
+  /* ============================================================
+     РАСКРЫТИЕ ТОЧЕК
+     ============================================================ */
   function openStep(step) {
     var body = step.querySelector('.step-body');
 
@@ -650,12 +878,20 @@ var NOTIFY = {
     if (next && next.classList.contains('locked')) {
       next.classList.remove('locked');
       next.querySelector('.step-head').disabled = false;
+      pulse(next);
     }
 
     opened++;
     countEl.textContent = opened;
 
     if (opened >= steps.length) revealFinale();
+  }
+
+  function pulse(el) {
+    el.animate(
+      [{ transform: 'translateX(-8px)' }, { transform: 'translateX(0)' }],
+      { duration: 420, easing: 'cubic-bezier(.22,.61,.36,1)' }
+    );
   }
 
   function closeStep(step) {
@@ -685,7 +921,9 @@ var NOTIFY = {
     });
   });
 
-  /* ---------- финал ---------- */
+  /* ============================================================
+     ФИНАЛ
+     ============================================================ */
   function revealFinale() {
     if (finale.classList.contains('is-on')) return;
 
@@ -700,11 +938,105 @@ var NOTIFY = {
   }
 
   /* ============================================================
-     ОТПРАВКА УВЕДОМЛЕНИЯ
+     СТИКЕРЫ: параллакс, «погладить», след лапок
+     ============================================================ */
+  var stickers = Array.prototype.slice.call(document.querySelectorAll('.sticker'));
+  var pets = 0;
+
+  var phrases = [
+    'мурр', 'гав!', 'ещё погладь', 'мяу-мяу',
+    'гав-гав', 'щеко́тно!', 'мур-мур', 'ты нашла секрет'
+  ];
+
+  /* --- параллакс за курсором --- */
+  if (hover && !calm) {
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      var mx = (e.clientX - r.left) / r.width - 0.5;
+      var my = (e.clientY - r.top) / r.height - 0.5;
+      stage.style.setProperty('--mx', (mx * 2).toFixed(3));
+      stage.style.setProperty('--my', (my * 2).toFixed(3));
+    });
+
+    stage.addEventListener('pointerleave', function () {
+      stage.style.setProperty('--mx', 0);
+      stage.style.setProperty('--my', 0);
+    });
+  }
+
+  /* --- клик по стикеру --- */
+  var bodies = ['#st-cat', '#st-dog', '#st-paw', '#st-heart'];
+
+  stickers.forEach(function (st) {
+    st.addEventListener('click', function (e) {
+      e.stopPropagation();
+
+      st.classList.remove('is-pet');
+      void st.offsetWidth;
+      st.classList.add('is-pet');
+      window.setTimeout(function () { st.classList.remove('is-pet'); }, 620);
+
+      var r = st.getBoundingClientRect();
+      for (var i = 0; i < 4; i++) {
+        window.setTimeout(function () {
+          spit(r.left + r.width / 2, r.top + r.height / 2, bodies[(pets + i) % bodies.length]);
+        }, i * 70);
+      }
+
+      pets++;
+      if (pets % 3 === 0) {
+        showToast(phrases[Math.floor(pets / 3 - 1) % phrases.length]);
+      }
+    });
+  });
+
+  function spit(x, y, id) {
+    var el = document.createElement('div');
+    el.className = 'float';
+    el.innerHTML = '<svg><use href="' + id + '"/></svg>';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.setProperty('--fx', ((Math.random() - 0.5) * 70).toFixed(0) + 'px');
+    el.style.setProperty('--fr', ((Math.random() - 0.5) * 90).toFixed(0) + 'deg');
+    document.body.appendChild(el);
+    window.setTimeout(function () { el.remove(); }, 1500);
+  }
+
+  /* --- след лапок за курсором --- */
+  var lastPaw = 0;
+  if (hover && !calm) {
+    document.addEventListener('pointermove', function (e) {
+      var now = Date.now();
+      if (now - lastPaw < 90) return;
+      lastPaw = now;
+
+      var el = document.createElement('div');
+      el.className = 'trail-paw';
+      el.innerHTML = '<svg><use href="#st-paw"/></svg>';
+      el.style.left = (e.clientX - 10) + 'px';
+      el.style.top = (e.clientY - 10) + 'px';
+      el.style.setProperty('--tr', ((Math.random() - 0.5) * 70).toFixed(0) + 'deg');
+      document.body.appendChild(el);
+      window.setTimeout(function () { el.remove(); }, 1050);
+    });
+  }
+
+  /* --- тост --- */
+  var toastTimer;
+  function showToast(text) {
+    toastEl.textContent = text;
+    toastEl.classList.add('is-on');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function () {
+      toastEl.classList.remove('is-on');
+    }, 1600);
+  }
+
+  /* ============================================================
+     УВЕДОМЛЕНИЕ
      ============================================================ */
   function when() {
-    var d = new Date();
-    return d.toLocaleString('ru-RU', {
+    return new Date().toLocaleString('ru-RU', {
       day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
     });
   }
@@ -726,7 +1058,25 @@ var NOTIFY = {
       );
     }
 
-    /* --- Email через FormSubmit --- */
+    /* --- Web3Forms (основной) --- */
+    if (NOTIFY.web3formsKey) {
+      jobs.push(
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: NOTIFY.web3formsKey,
+            subject: 'Вера ответила на приглашение: ' + answer,
+            from_name: 'Приглашение',
+            'Ответ': answer,
+            'Когда': when(),
+            'Страница': location.href
+          })
+        }).catch(function (e) { console.warn('Web3Forms:', e); })
+      );
+    }
+
+    /* --- FormSubmit (запасной) --- */
     if (NOTIFY.formsubmit) {
       jobs.push(
         fetch('https://formsubmit.co/ajax/' + encodeURIComponent(NOTIFY.formsubmit), {
@@ -745,21 +1095,21 @@ var NOTIFY = {
     }
 
     if (!jobs.length) {
-      console.info('Уведомления не настроены (NOTIFY пустой).');
+      console.info('Уведомления не настроены.');
       return Promise.resolve();
     }
 
-    // ждём не дольше 6 секунд — чтобы интерфейс не завис
     return Promise.race([
       Promise.allSettled(jobs),
-      new Promise(function (res) { setTimeout(res, 6000); })
+      new Promise(function (res) { window.setTimeout(res, 6000); })
     ]);
   }
 
-  /* ---------- «да, иду» ---------- */
+  /* ============================================================
+     «ДА, ИДУ»
+     ============================================================ */
   var yesBtn  = document.getElementById('yesBtn');
   var yesNote = document.getElementById('yesNote');
-  var sparks  = document.getElementById('sparks');
 
   yesBtn.addEventListener('click', function () {
     if (yesBtn.disabled) return;
@@ -777,24 +1127,28 @@ var NOTIFY = {
   });
 
   function burst() {
-    var colors = ['#B08D57', '#B4593F', '#C98A72', '#D8BC8E'];
-    for (var i = 0; i < 26; i++) {
+    var all = ['#st-paw', '#st-heart', '#st-cat', '#st-dog'];
+
+    for (var i = 0; i < 30; i++) {
       (function (i) {
-        var s = document.createElement('span');
+        var s = document.createElement('div');
         s.className = 'spark';
-        s.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * window.innerWidth * 0.75) + 'px';
-        s.style.top  = (window.innerHeight / 2 + (Math.random() - 0.5) * 160) + 'px';
-        s.style.background = colors[i % colors.length];
-        s.style.setProperty('--dx', ((Math.random() - 0.5) * 160) + 'px');
-        s.style.setProperty('--dy', (-60 - Math.random() * 220) + 'px');
-        s.style.animationDelay = (Math.random() * 0.35) + 's';
+        s.innerHTML = '<svg><use href="' + all[i % all.length] + '"/></svg>';
+        s.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * window.innerWidth * 0.8) + 'px';
+        s.style.top  = (window.innerHeight / 2 + (Math.random() - 0.5) * 180) + 'px';
+        s.style.setProperty('--dx', ((Math.random() - 0.5) * 180).toFixed(0) + 'px');
+        s.style.setProperty('--dy', (-70 - Math.random() * 260).toFixed(0) + 'px');
+        s.style.setProperty('--rot', ((Math.random() - 0.5) * 220).toFixed(0) + 'deg');
+        s.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's';
         sparks.appendChild(s);
-        window.setTimeout(function () { s.remove(); }, 3000);
+        window.setTimeout(function () { s.remove(); }, 3400);
       })(i);
     }
   }
 
-  /* ---------- календарь ---------- */
+  /* ============================================================
+     КАЛЕНДАРЬ
+     ============================================================ */
   document.getElementById('icsBtn').addEventListener('click', function () {
     var ics = [
       'BEGIN:VCALENDAR',
@@ -829,7 +1183,9 @@ var NOTIFY = {
     window.setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
   });
 
-  /* ---------- счётчик ---------- */
+  /* ============================================================
+     СЧЁТЧИК ДНЕЙ
+     ============================================================ */
   var counted = false;
   function startCountdown() {
     if (counted) return;
