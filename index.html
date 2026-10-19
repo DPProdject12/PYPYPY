@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF6EE">
+<title>Для Веры · 1 ноября</title>
+<meta property="og:title" content="Для Веры · 1 ноября">
+<meta property="og:description" content="Три точки, три часа и очень хорошая компания.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1714;
+    --ink-soft:#6E6257;
+    --paper:#FBF6EE;
+    --accent:#B4593F;
+    --accent-dim:#C98A72;
+    --gold:#B08D57;
+    --line:#E3D6C3;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(120% 80% at 15% 0%, #FDF9F2 0%, rgba(253,249,242,0) 60%),
+      radial-gradient(90% 70% at 90% 100%, #F4E9DA 0%, rgba(244,233,218,0) 65%),
+      #F1E7D9;
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-weight:300;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    justify-content:center;
+    padding:clamp(10px,3vw,40px) clamp(10px,3vw,24px);
+  }
+
+  .stage{
+    width:100%;
+    max-width:620px;
+    background:var(--paper);
+    position:relative;
+    box-shadow:0 1px 2px rgba(28,23,20,.05), 0 24px 60px -30px rgba(28,23,20,.35);
+    overflow:hidden;
+  }
+  .stage::before{
+    content:"";
+    position:absolute;inset:9px;
+    border:1px solid var(--line);
+    pointer-events:none;
+    z-index:2;
+    opacity:.75;
+  }
+
+  /* ============ КОНВЕРТ ============ */
+  .intro{
+    position:relative;
+    min-height:min(94vh,880px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:clamp(34px,8vw,64px) clamp(24px,7vw,56px);
+    transition:opacity .55s var(--ease), transform .55s var(--ease), filter .55s var(--ease);
+  }
+  .intro.is-gone{
+    opacity:0;
+    transform:translateY(-18px) scale(.985);
+    filter:blur(3px);
+    pointer-events:none;
+  }
+
+  .eyebrow{
+    font-size:10.5px;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:500;
+    margin-bottom:26px;
+  }
+
+  .date{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-weight:300;
+    line-height:.84;
+    letter-spacing:-.015em;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+  }
+  .date .d{
+    font-size:clamp(96px,30vw,142px);
+    background:linear-gradient(178deg,#241D18 10%,#4A3A2E 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .date .m{
+    font-size:clamp(26px,7vw,36px);
+    font-style:italic;
+    font-weight:400;
+    color:var(--accent);
+    letter-spacing:.01em;
+  }
+  .weekday{
+    margin-top:16px;
+    font-size:11px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  .ornament{
+    display:flex;align-items:center;gap:12px;
+    margin:30px 0 26px;
+    color:var(--line);
+    width:min(240px,70%);
+  }
+  .ornament::before,.ornament::after{content:"";height:1px;background:var(--line);flex:1}
+  .ornament i{
+    width:5px;height:5px;border-radius:50%;
+    background:var(--gold);flex:none;
+    box-shadow:0 0 0 4px rgba(176,141,87,.13);
+  }
+
+  .lead{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(19px,4.9vw,23px);
+    line-height:1.55;
+    font-weight:400;
+    color:#3A302A;
+    max-width:26ch;
+  }
+  .hint{
+    margin-top:26px;
+    font-size:10.5px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--accent-dim);
+  }
+
+  .cta{
+    margin-top:16px;
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--paper);
+    background:var(--ink);
+    border:1px solid var(--ink);
+    padding:16px 40px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:opacity .2s ease,transform .25s var(--ease);
+  }
+  .cta:hover{opacity:.88;transform:translateY(-1px)}
+  .cta:active{transform:translateY(0)}
+  .cta::after{
+    content:"";
+    position:absolute;top:0;left:-60%;
+    width:40%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+    animation:sheen 4.5s ease-in-out infinite;
+  }
+  @keyframes sheen{
+    0%,70%{left:-60%}
+    100%{left:130%}
+  }
+
+  /* ============ ПУТЬ ============ */
+  .journey{
+    display:none;
+    padding:clamp(28px,7vw,52px) clamp(22px,6.5vw,50px) clamp(34px,7vw,54px);
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .6s var(--ease), transform .6s var(--ease);
+  }
+  .journey.is-on{display:block}
+  .journey.is-visible{opacity:1;transform:none}
+
+  .j-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:8px;
+  }
+  .j-date{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:19px;
+    font-style:italic;
+    color:#3A302A;
+  }
+  .j-progress{
+    font-size:10px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .j-progress b{color:var(--accent);font-weight:500}
+
+  .steps{list-style:none;position:relative}
+
+  .step{
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .step:last-child{border-bottom:none}
+
+  .step-head{
+    width:100%;
+    display:grid;
+    grid-template-columns:34px 1fr 22px;
+    align-items:center;
+    gap:12px;
+    padding:22px 2px;
+    background:none;
+    border:0;
+    font-family:inherit;
+    color:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:opacity .35s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .num{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:14px;
+    letter-spacing:.08em;
+    color:var(--gold);
+    font-weight:500;
+    font-variant-numeric:tabular-nums;
+  }
+  .head-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .head-time{
+    font-size:10.5px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+    transition:color .3s ease;
+  }
+  .head-title{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:21px;
+    font-weight:500;
+    line-height:1.25;
+    letter-spacing:.005em;
+  }
+  .head-sealed{
+    display:none;
+    font-size:13px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#B6A794;
+    font-style:italic;
+  }
+
+  .chev{
+    width:22px;height:22px;
+    position:relative;
+    opacity:.45;
+    transition:transform .4s var(--ease), opacity .3s ease;
+  }
+  .chev::before,.chev::after{
+    content:"";
+    position:absolute;
+    top:50%;left:50%;
+    width:8px;height:1px;
+    background:var(--ink);
+    transform-origin:center;
+  }
+  .chev::before{transform:translate(-50%,-50%) rotate(45deg) translateX(3px)}
+  .chev::after{transform:translate(-50%,-50%) rotate(-45deg) translateX(-3px)}
+
+  .step.locked .step-head{opacity:.5;cursor:default}
+  .step.locked .chev{opacity:.18}
+  .step.locked .head-time,
+  .step.locked .head-title{display:none}
+  .step.locked .head-sealed{display:block}
+
+  .step.is-open .chev{transform:rotate(180deg);opacity:.8}
+  .step.is-open .head-time{color:var(--accent)}
+
+  .step-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .58s var(--ease);
+  }
+  .step-inner{
+    padding:0 2px 26px 46px;
+    opacity:0;
+    transform:translateY(-6px);
+    transition:opacity .45s ease .08s, transform .45s var(--ease) .08s;
+  }
+  .step.is-open .step-inner{opacity:1;transform:none}
+
+  .step-inner p{
+    font-size:14.5px;
+    line-height:1.68;
+    color:#4B4038;
+  }
+  .addr{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .addr b{color:#3A302A;font-weight:500}
+
+  .maplink{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:14px;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    text-decoration:none;
+    padding-bottom:3px;
+    border-bottom:1px solid rgba(180,89,63,.32);
+    transition:border-color .2s ease, gap .2s ease;
+  }
+  .maplink:hover{border-bottom-color:var(--accent);gap:11px}
+  .maplink span{font-size:13px;line-height:1}
+
+  /* ============ ФИНАЛ ============ */
+  .finale{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height .7s var(--ease), opacity .6s ease .15s;
+    text-align:center;
+  }
+  .finale.is-on{opacity:1}
+  .finale-inner{padding-top:40px}
+
+  .fin-orn{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    color:var(--line);margin-bottom:22px;
+  }
+  .fin-orn::before,.fin-orn::after{content:"";height:1px;width:44px;background:var(--line)}
+  .fin-orn i{width:6px;height:6px;transform:rotate(45deg);background:var(--gold)}
+
+  .finale h2{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(30px,8vw,40px);
+    font-weight:400;
+    line-height:1.15;
+    letter-spacing:-.01em;
+  }
+  .finale h2 em{font-style:italic;color:var(--accent)}
+  .finale .sub{
+    margin-top:10px;
+    font-size:14px;
+    color:var(--ink-soft);
+    max-width:30ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .fin-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-top:26px;
+  }
+  .btn{
+    flex:1 1 150px;
+    max-width:230px;
+    font-family:inherit;
+    font-size:11.5px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    font-weight:500;
+    padding:15px 20px;
+    cursor:pointer;
+    border:1px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    text-align:center;
+    transition:opacity .2s ease,transform .2s var(--ease),background .2s ease;
+  }
+  .btn:hover{opacity:.87;transform:translateY(-1px)}
+  .btn.ghost{
+    background:transparent;
+    color:var(--ink);
+    border-color:#C9BBA7;
+  }
+  .btn.ghost:hover{background:rgba(28,23,20,.045);opacity:1}
+  .btn[disabled]{cursor:default}
+
+  .yes-note{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height .6s var(--ease), opacity .5s ease;
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:17px;
+    font-style:italic;
+    line-height:1.6;
+    color:var(--accent);
+  }
+  .yes-note.is-on{opacity:1;margin-top:20px}
+  .yes-note p{max-width:32ch;margin:0 auto}
+
+  .countdown{
+    margin-top:26px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-size:10px;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:#A2937F;
+  }
+
+  /* ============ ИСКРЫ ============ */
+  .sparks{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:50;
+    overflow:hidden;
+  }
+  .spark{
+    position:absolute;
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:0;
+    animation:rise 2.4s var(--ease) forwards;
+  }
+  @keyframes rise{
+    0%{opacity:0;transform:translate(0,0) scale(.4)}
+    18%{opacity:.9}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}
+  }
+
+  @media (max-width:400px){
+    .step-inner{padding-left:0}
+    .step-head{grid-template-columns:26px 1fr 20px;gap:10px}
+    .fin-actions{flex-direction:column}
+    .btn{max-width:none;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<main class="stage">
+
+  <!-- ============ КОНВЕРТ ============ -->
+  <section class="intro" id="intro">
+    <p class="eyebrow">для Веры</p>
+
+    <div class="date">
+      <span class="d">01</span>
+      <span class="m">ноября</span>
+    </div>
+    <p class="weekday">воскресенье · 2026</p>
+
+    <div class="ornament"><i></i></div>
+
+    <p class="lead">У меня есть план на этот вечер —<br>три точки, три часа<br>и очень хорошая компания.</p>
+
+    <p class="hint">открывай по одной</p>
+    <button class="cta" id="startBtn" type="button">Открыть приглашение</button>
+  </section>
+
+  <!-- ============ ПУТЬ ============ -->
+  <section class="journey" id="journey" aria-label="План вечера">
+
+    <header class="j-head">
+      <p class="j-date">1 ноября, воскресенье</p>
+      <p class="j-progress"><b id="count">0</b> из 3</p>
+    </header>
+
+    <ol class="steps" id="steps">
+
+      <!-- 01 -->
+      <li class="step" data-index="0">
+        <button class="step-head" type="button" aria-expanded="false">
+          <span class="num">01</span>
+          <span class="head-text">
+            <span class="head-time">15:50</span>
+            <span class="head-title">Сбор у «Садовой»</span>
+            <span class="head-sealed">пока секрет</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="step-body">
+          <div class="step-inner">
+            <p>Встречаемся у выхода №3 со станции «Садовая». Там всегда людно, поэтому я встану чуть в стороне от потока — увидишь сразу.</p>
+            <div class="addr">
+              <b>Выход №3</b> · м. «Садовая», Сенная площадь
+            </div>
+            <a class="maplink" href="https://yandex.ru/maps/?text=%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%20%D0%BC%D0%B5%D1%82%D1%80%D0%BE%20%D0%A1%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0%D1%8F" target="_blank" rel="noopener">Показать на карте <span>→</span></a>
+          </div>
+        </div>
+      </li>
+
+      <!-- 02 -->
+      <li class="step locked" data-index="1">
+        <button class="step-head" type="button" aria-expanded="false" disabled>
+          <span class="num">02</span>
+          <span class="head-text">
+            <span class="head-time">16:00</span>
+            <span class="head-title">Паста и вино</span>
+            <span class="head-sealed">пока секрет</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="step-body">
+          <div class="step-inner">
+            <p>Пять минут пешком — и мы на втором этаже «Бертгольд-центра». Итальянская кухня, бокал вина и разговоры без спешки. Стол на двоих я забронирую.</p>
+            <div class="addr">
+              <b>Паста и Вино</b><br>
+              ул. Гражданская, 13–15 · «Бертгольд-центр», 2 этаж
+            </div>
+            <a class="maplink" href="https://yandex.ru/maps/org/pasta_i_vino/29564146474" target="_blank" rel="noopener">Показать на карте <span>→</span></a>
+          </div>
+        </div>
+      </li>
+
+      <!-- 03 -->
+      <li class="step locked" data-index="2">
+        <button class="step-head" type="button" aria-expanded="false" disabled>
+          <span class="num">03</span>
+          <span class="head-text">
+            <span class="head-time">17:30</span>
+            <span class="head-title">Стендап на Грибоедова</span>
+            <span class="head-sealed">пока секрет</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="step-body">
+          <div class="step-inner">
+            <p>А на десерт — стендап-концерт. От ресторана идти минут десять, как раз проветримся после пасты. Зал небольшой, места близко к сцене — смеяться будем вместе.</p>
+            <div class="addr">
+              <b>Стендап-клуб на Грибоедова</b> · 17:30<br>
+              наб. канала Грибоедова, 38 · вход с набережной
+            </div>
+            <a class="maplink" href="https://yandex.ru/maps/org/stendap_klub/147766701388" target="_blank" rel="noopener">Показать на карте <span>→</span></a>
+          </div>
+        </div>
+      </li>
+
+    </ol>
+
+    <!-- ============ ФИНАЛ ============ -->
+    <div class="finale" id="finale">
+      <div class="finale-inner">
+        <div class="fin-orn"><i></i></div>
+        <h2>Ну что, Вера, <em>идёшь?</em></h2>
+        <p class="sub">Скажи «да» — и я забронирую столик и билеты.</p>
+
+        <div class="fin-actions">
+          <button class="btn" id="yesBtn" type="button">Да, иду</button>
+          <button class="btn ghost" id="icsBtn" type="button">В календарь</button>
+        </div>
+
+        <div class="yes-note" id="yesNote">
+          <p>Тогда до встречи 1 ноября. В 15:50, у входа №3.<br>Напишу тебе накануне, чтобы точно не разминуться.</p>
+        </div>
+
+        <p class="countdown" id="countdown"></p>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<div class="sparks" id="sparks" aria-hidden="true"></div>
+
+<script>
+/* ============================================================
+   НАСТРОЙКИ УВЕДОМЛЕНИЙ
+   Пустая строка = канал выключен.
+   ============================================================ */
+var NOTIFY = {
+  // --- Telegram (не используется, можно заполнить позже) ---
+  telegramToken:  '',
+  telegramChatId: '',
+
+  // --- Email через FormSubmit.co ---
+  // Сейчас тут твой настоящий адрес — нужен для активации.
+  // После активации FormSubmit выдаст строку-алиас: замени на неё,
+  // чтобы адрес не был виден в исходнике страницы.
+  formsubmit: 'dimanchik8485@gmail.com'
+};
+
+/* ============================================================ */
+
+(function () {
+  'use strict';
+
+  var intro    = document.getElementById('intro');
+  var journey  = document.getElementById('journey');
+  var startBtn = document.getElementById('startBtn');
+  var steps    = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var countEl  = document.getElementById('count');
+  var finale   = document.getElementById('finale');
+  var opened   = 0;
+
+  /* ---------- конверт → план ---------- */
+  startBtn.addEventListener('click', function () {
+    intro.classList.add('is-gone');
+    window.setTimeout(function () { intro.style.display = 'none'; }, 600);
+
+    journey.classList.add('is-on');
+    window.setTimeout(function () { journey.classList.add('is-visible'); }, 40);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------- раскрытие точки ---------- */
+  function openStep(step) {
+    var body = step.querySelector('.step-body');
+
+    step.classList.add('is-open');
+    step.querySelector('.step-head').setAttribute('aria-expanded', 'true');
+    body.style.maxHeight = body.scrollHeight + 'px';
+
+    body.addEventListener('transitionend', function handler(e) {
+      if (e.propertyName !== 'max-height') return;
+      body.removeEventListener('transitionend', handler);
+      if (step.classList.contains('is-open')) body.style.maxHeight = 'none';
+    });
+
+    var next = step.nextElementSibling;
+    if (next && next.classList.contains('locked')) {
+      next.classList.remove('locked');
+      next.querySelector('.step-head').disabled = false;
+    }
+
+    opened++;
+    countEl.textContent = opened;
+
+    if (opened >= steps.length) revealFinale();
+  }
+
+  function closeStep(step) {
+    var body = step.querySelector('.step-body');
+
+    body.style.maxHeight = body.scrollHeight + 'px';
+    step.querySelector('.step-head').setAttribute('aria-expanded', 'false');
+
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        step.classList.remove('is-open');
+        body.style.maxHeight = '0px';
+      });
+    });
+
+    opened = Math.max(0, opened - 1);
+    countEl.textContent = opened;
+  }
+
+  steps.forEach(function (step) {
+    var head = step.querySelector('.step-head');
+
+    head.addEventListener('click', function () {
+      if (step.classList.contains('locked')) return;
+      if (step.classList.contains('is-open')) closeStep(step);
+      else openStep(step);
+    });
+  });
+
+  /* ---------- финал ---------- */
+  function revealFinale() {
+    if (finale.classList.contains('is-on')) return;
+
+    finale.classList.add('is-on');
+    finale.style.maxHeight = finale.scrollHeight + 'px';
+
+    window.setTimeout(function () {
+      finale.style.maxHeight = 'none';
+      finale.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      startCountdown();
+    }, 700);
+  }
+
+  /* ============================================================
+     ОТПРАВКА УВЕДОМЛЕНИЯ
+     ============================================================ */
+  function when() {
+    var d = new Date();
+    return d.toLocaleString('ru-RU', {
+      day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function notify(answer) {
+    var jobs = [];
+
+    /* --- Telegram --- */
+    if (NOTIFY.telegramToken && NOTIFY.telegramChatId) {
+      jobs.push(
+        fetch('https://api.telegram.org/bot' + NOTIFY.telegramToken + '/sendMessage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: NOTIFY.telegramChatId,
+            text: 'Ответ на приглашение: ' + answer + '\n' + when()
+          })
+        }).catch(function (e) { console.warn('Telegram:', e); })
+      );
+    }
+
+    /* --- Email через FormSubmit --- */
+    if (NOTIFY.formsubmit) {
+      jobs.push(
+        fetch('https://formsubmit.co/ajax/' + encodeURIComponent(NOTIFY.formsubmit), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: 'Вера ответила на приглашение: ' + answer,
+            _template: 'table',
+            _captcha: 'false',
+            'Ответ': answer,
+            'Когда': when(),
+            'Страница': location.href
+          })
+        }).catch(function (e) { console.warn('FormSubmit:', e); })
+      );
+    }
+
+    if (!jobs.length) {
+      console.info('Уведомления не настроены (NOTIFY пустой).');
+      return Promise.resolve();
+    }
+
+    // ждём не дольше 6 секунд — чтобы интерфейс не завис
+    return Promise.race([
+      Promise.allSettled(jobs),
+      new Promise(function (res) { setTimeout(res, 6000); })
+    ]);
+  }
+
+  /* ---------- «да, иду» ---------- */
+  var yesBtn  = document.getElementById('yesBtn');
+  var yesNote = document.getElementById('yesNote');
+  var sparks  = document.getElementById('sparks');
+
+  yesBtn.addEventListener('click', function () {
+    if (yesBtn.disabled) return;
+
+    yesBtn.disabled = true;
+    yesBtn.textContent = 'Отправляю…';
+
+    notify('ДА, идёт').then(function () {
+      yesNote.classList.add('is-on');
+      yesNote.style.maxHeight = yesNote.scrollHeight + 30 + 'px';
+      yesBtn.textContent = 'До встречи';
+      yesBtn.style.opacity = '.55';
+      burst();
+    });
+  });
+
+  function burst() {
+    var colors = ['#B08D57', '#B4593F', '#C98A72', '#D8BC8E'];
+    for (var i = 0; i < 26; i++) {
+      (function (i) {
+        var s = document.createElement('span');
+        s.className = 'spark';
+        s.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * window.innerWidth * 0.75) + 'px';
+        s.style.top  = (window.innerHeight / 2 + (Math.random() - 0.5) * 160) + 'px';
+        s.style.background = colors[i % colors.length];
+        s.style.setProperty('--dx', ((Math.random() - 0.5) * 160) + 'px');
+        s.style.setProperty('--dy', (-60 - Math.random() * 220) + 'px');
+        s.style.animationDelay = (Math.random() * 0.35) + 's';
+        sparks.appendChild(s);
+        window.setTimeout(function () { s.remove(); }, 3000);
+      })(i);
+    }
+  }
+
+  /* ---------- календарь ---------- */
+  document.getElementById('icsBtn').addEventListener('click', function () {
+    var ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//invite//01-11-2026//RU',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:invite-20261101@local',
+      'DTSTAMP:20261019T090000Z',
+      'DTSTART:20261101T125000Z',
+      'DTEND:20261101T170000Z',
+      'SUMMARY:Вечер на двоих · Паста и вино + стендап',
+      'LOCATION:Санкт-Петербург, м. Садовая (выход 3) → ул. Гражданская 13-15 → наб. канала Грибоедова 38',
+      'DESCRIPTION:15:50 — сбор у выхода №3 (м. Садовая)\\n16:00 — Паста и Вино, Бертгольд-центр, 2 этаж\\n17:30 — Стендап-клуб на Грибоедова, наб. канала Грибоедова 38',
+      'BEGIN:VALARM',
+      'TRIGGER:-PT2H',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Сегодня вечер на двоих',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url;
+    a.download = 'vecher-01-11-2026.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  });
+
+  /* ---------- счётчик ---------- */
+  var counted = false;
+  function startCountdown() {
+    if (counted) return;
+    counted = true;
+
+    var el     = document.getElementById('countdown');
+    var target = new Date('2026-11-01T15:50:00+03:00');
+    var days   = Math.ceil((target - new Date()) / 86400000);
+
+    if (days > 1)        el.textContent = 'до встречи ' + days + ' ' + plural(days);
+    else if (days === 1) el.textContent = 'уже завтра';
+    else if (days === 0) el.textContent = 'сегодня';
+    else                 el.textContent = 'этот вечер уже был';
+  }
+
+  function plural(n) {
+    var m = Math.abs(n) % 100, k = m % 10;
+    if (m > 10 && m < 20) return 'дней';
+    if (k === 1) return 'день';
+    if (k >= 2 && k <= 4) return 'дня';
+    return 'дней';
+  }
+})();
+</script>
+</body>
+</html>
