@@ -229,6 +229,48 @@
     100%{left:130%}
   }
 
+  /* ============ ВОСКОВАЯ ПЕЧАТЬ ============ */
+  .seal{
+    position:relative;
+    z-index:4;
+    width:116px;height:116px;
+    margin-top:26px;
+    padding:0;
+    background:none;
+    border:0;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    animation:sealBeat 3.2s ease-in-out infinite;
+    transition:transform .25s var(--ease);
+  }
+  .seal:hover{transform:scale(1.07) rotate(-3deg)}
+  .seal:active{transform:scale(.94)}
+  .seal-half{
+    position:absolute;inset:0;
+    transition:transform .75s var(--ease), opacity .6s ease .12s;
+  }
+  .seal-half svg{
+    width:100%;height:100%;display:block;
+    filter:drop-shadow(0 8px 12px rgba(120,40,30,.38));
+  }
+  .seal-half.l{clip-path:polygon(0 0,53% 0,47% 20%,57% 38%,44% 58%,55% 79%,49% 100%,0 100%)}
+  .seal-half.r{clip-path:polygon(53% 0,100% 0,100% 100%,49% 100%,55% 79%,44% 58%,57% 38%,47% 20%)}
+  .seal.is-broken{animation:none;pointer-events:none}
+  .seal.is-broken .seal-half.l{transform:translate(-30px,20px) rotate(-18deg);opacity:0}
+  .seal.is-broken .seal-half.r{transform:translate(30px,28px) rotate(16deg);opacity:0}
+  @keyframes sealBeat{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.045)}
+  }
+  .seal-hint{
+    position:relative;z-index:4;
+    margin-top:16px;
+    font-size:10.5px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--accent-dim);
+  }
+
   /* ============ ПУТЬ ============ */
   .journey{
     display:none;
@@ -476,6 +518,15 @@
     color:var(--ink-soft);
     border-color:#DCCFBC;
   }
+  .btn.nope.is-honest{
+    border-color:#B9A88F;
+    color:var(--ink);
+    animation:honestIn .5s var(--ease);
+  }
+  @keyframes honestIn{
+    0%{transform:scale(.92)}
+    100%{transform:scale(1)}
+  }
   .btn.nope.is-fleeing{
     position:fixed;
     z-index:80;
@@ -505,13 +556,52 @@
   .yes-note p{max-width:32ch;margin:0 auto}
 
   .countdown{
-    margin-top:26px;
-    padding-top:20px;
+    margin-top:30px;
+    padding-top:22px;
     border-top:1px solid var(--line);
+    position:relative;
+    z-index:4;
+  }
+  .cd-label{
     font-size:10px;
-    letter-spacing:.26em;
+    letter-spacing:.3em;
     text-transform:uppercase;
     color:#A2937F;
+    margin-bottom:14px;
+  }
+  .cd-row{
+    display:flex;
+    justify-content:center;
+    gap:clamp(10px,3.5vw,20px);
+  }
+  .cd-cell{
+    min-width:58px;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+  }
+  .cd-num{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(34px,10vw,46px);
+    font-weight:300;
+    line-height:1;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+    min-width:2ch;
+    display:inline-block;
+  }
+  .cd-cell:last-child .cd-num{color:var(--accent)}
+  .cd-num.bump{animation:bump .42s var(--ease)}
+  @keyframes bump{
+    0%{transform:translateY(5px);opacity:.25}
+    100%{transform:none;opacity:1}
+  }
+  .cd-cap{
+    font-size:9.5px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:#A2937F;
+  }
+  .cd-over{
+    font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#A2937F;
   }
 
   /* ============ ЛЕТАЮЩИЕ ЧАСТИЦЫ ============ */
@@ -657,6 +747,34 @@
       <path d="M32 52 C10 38 10 20 22 16 C28 14 32 19 32 23 C32 19 36 14 42 16 C54 20 54 38 32 52 Z"
             fill="#E88C7D" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill"/>
     </symbol>
+
+    <!-- ВОСКОВАЯ ПЕЧАТЬ -->
+    <symbol id="st-seal" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="waxG" cx="36%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#D96A57"/>
+          <stop offset=".55" stop-color="#B4493B"/>
+          <stop offset="1" stop-color="#85291F"/>
+        </radialGradient>
+      </defs>
+      <path d="M95.36 50.00 L95.97 52.06 L95.82 54.12 L94.88 56.08 L93.41 57.88 L91.85 59.55 L90.62 61.21 L89.93 62.97 L89.67 64.89 L89.50 66.88 L89.04 68.80 L88.07 70.48 L86.59 71.86 L84.87 73.02 L83.23 74.14 L81.89 75.43 L80.89 76.99 L80.11 78.78 L79.31 80.65 L78.33 82.43 L77.15 84.05 L75.84 85.56 L74.48 87.08 L73.11 88.68 L71.66 90.25 L70.01 91.55 L68.06 92.26 L65.83 92.18 L63.44 91.38 L61.09 90.19 L58.93 89.14 L57.02 88.69 L55.29 89.05 L53.61 90.08 L51.86 91.40 L50.00 92.57 L48.06 93.27 L46.09 93.45 L44.14 93.28 L42.19 93.03 L40.22 92.84 L38.22 92.69 L36.23 92.39 L34.33 91.76 L32.59 90.72 L31.03 89.39 L29.55 88.01 L28.02 86.79 L26.35 85.83 L24.58 84.99 L22.87 84.02 L21.46 82.66 L20.50 80.86 L19.94 78.74 L19.55 76.60 L18.95 74.76 L17.82 73.38 L16.05 72.41 L13.81 71.62 L11.47 70.74 L9.42 69.54 L7.92 67.98 L7.03 66.13 L6.58 64.11 L6.37 62.04 L6.27 59.98 L6.32 57.93 L6.65 55.87 L7.35 53.84 L8.34 51.87 L9.36 50.00 L10.06 48.21 L10.17 46.42 L9.66 44.54 L8.79 42.52 L8.01 40.42 L7.72 38.33 L8.14 36.40 L9.15 34.67 L10.42 33.08 L11.56 31.49 L12.34 29.73 L12.77 27.75 L13.10 25.64 L13.65 23.59 L14.65 21.81 L16.13 20.41 L17.94 19.35 L19.87 18.49 L21.75 17.67 L23.53 16.81 L25.29 15.98 L27.10 15.31 L29.00 14.85 L30.91 14.52 L32.70 14.07 L34.26 13.18 L35.61 11.67 L36.87 9.59 L38.21 7.29 L39.80 5.30 L41.67 4.07 L43.75 3.82 L45.90 4.43 L48.00 5.49 L50.00 6.57 L51.92 7.35 L53.80 7.79 L55.68 8.06 L57.55 8.41 L59.36 9.00 L61.10 9.79 L62.80 10.60 L64.54 11.25 L66.39 11.65 L68.34 11.91 L70.30 12.28 L72.13 12.97 L73.73 14.06 L75.13 15.42 L76.49 16.78 L78.04 17.90 L79.93 18.70 L82.10 19.31 L84.31 20.02 L86.19 21.14 L87.40 22.83 L87.83 25.03 L87.64 27.51 L87.20 29.98 L86.90 32.23 L87.00 34.18 L87.55 35.91 L88.37 37.53 L89.27 39.16 L90.12 40.84 L90.94 42.57 L91.87 44.33 L93.00 46.13 L94.25 48.01 Z" fill="url(#waxG)"/>
+      <circle cx="50" cy="50" r="33" fill="none" stroke="#7A2219" stroke-opacity=".45" stroke-width="1.6"/>
+      <circle cx="50" cy="50" r="31.6" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="1"/>
+      <g transform="translate(-.9 -.9)" fill="#F0A090" fill-opacity=".55">
+        <ellipse cx="50" cy="57" rx="9.5" ry="7.8"/>
+        <ellipse cx="37.5" cy="45" rx="4.1" ry="5.1" transform="rotate(-16 37.5 45)"/>
+        <ellipse cx="62.5" cy="45" rx="4.1" ry="5.1" transform="rotate(16 62.5 45)"/>
+        <ellipse cx="44.5" cy="37.5" rx="3.7" ry="4.8"/>
+        <ellipse cx="55.5" cy="37.5" rx="3.7" ry="4.8"/>
+      </g>
+      <g fill="#7A2219" fill-opacity=".85">
+        <ellipse cx="50" cy="57" rx="9.5" ry="7.8"/>
+        <ellipse cx="37.5" cy="45" rx="4.1" ry="5.1" transform="rotate(-16 37.5 45)"/>
+        <ellipse cx="62.5" cy="45" rx="4.1" ry="5.1" transform="rotate(16 62.5 45)"/>
+        <ellipse cx="44.5" cy="37.5" rx="3.7" ry="4.8"/>
+        <ellipse cx="55.5" cy="37.5" rx="3.7" ry="4.8"/>
+      </g>
+    </symbol>
   </defs>
 </svg>
 
@@ -693,8 +811,11 @@
 
     <p class="lead">У меня есть план на этот вечер —<br>три точки, три часа<br>и очень хорошая компания.</p>
 
-    <p class="hint">открывай по одной</p>
-    <button class="cta" id="startBtn" type="button">Открыть приглашение</button>
+    <button class="seal" id="startBtn" type="button" aria-label="Сломать печать и открыть приглашение">
+      <span class="seal-half l"><svg viewBox="0 0 100 100"><use href="#st-seal"/></svg></span>
+      <span class="seal-half r"><svg viewBox="0 0 100 100"><use href="#st-seal"/></svg></span>
+    </button>
+    <p class="seal-hint">сломай печать</p>
   </section>
 
   <!-- ============ ПУТЬ ============ -->
@@ -815,7 +936,15 @@
           <p>Тогда до встречи 1 ноября. В 15:50, у входа №3.<br>Напишу тебе накануне, чтобы точно не разминуться.</p>
         </div>
 
-        <p class="countdown" id="countdown"></p>
+        <div class="countdown" id="countdown">
+          <p class="cd-label">до встречи</p>
+          <div class="cd-row">
+            <div class="cd-cell"><span class="cd-num" data-u="d">--</span><span class="cd-cap" data-c="d">дней</span></div>
+            <div class="cd-cell"><span class="cd-num" data-u="h">--</span><span class="cd-cap" data-c="h">часов</span></div>
+            <div class="cd-cell"><span class="cd-num" data-u="m">--</span><span class="cd-cap" data-c="m">минут</span></div>
+            <div class="cd-cell"><span class="cd-num" data-u="s">--</span><span class="cd-cap" data-c="s">секунд</span></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -867,13 +996,34 @@ var NOTIFY = {
   /* ============================================================
      КОНВЕРТ → ПЛАН
      ============================================================ */
-  startBtn.addEventListener('click', function () {
+  var sealBroken = false;
+
+  function openEnvelope() {
     intro.classList.add('is-gone');
     window.setTimeout(function () { intro.style.display = 'none'; }, 600);
 
     journey.classList.add('is-on');
     window.setTimeout(function () { journey.classList.add('is-visible'); }, 40);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  startBtn.addEventListener('click', function () {
+    if (sealBroken) return;
+    sealBroken = true;
+
+    startBtn.classList.add('is-broken');
+    if (navigator.vibrate) { try { navigator.vibrate([18, 40, 12]); } catch (e) {} }
+
+    var r = startBtn.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var ids = ['#st-heart', '#st-paw', '#st-heart', '#st-paw', '#st-cat'];
+    for (var i = 0; i < ids.length; i++) {
+      (function (i) {
+        window.setTimeout(function () { spit(cx, cy, ids[i]); }, i * 60);
+      })(i);
+    }
+
+    window.setTimeout(openEnvelope, calm ? 0 : 720);
   });
 
   /* ============================================================
@@ -1148,8 +1298,10 @@ var NOTIFY = {
   yesBtn.addEventListener('click', function () {
     if (yesBtn.disabled) return;
 
+    if (answered) return;
     yesBtn.disabled = true;
     yesBtn.textContent = 'Отправляю…';
+    retireNo();
 
     notify('ДА, идёт').then(function () {
       yesNote.classList.add('is-on');
@@ -1162,15 +1314,26 @@ var NOTIFY = {
 
 
   /* ============================================================
-     КНОПКА «НЕТ» — убегает и ничего не делает
+     КНОПКА «НЕТ» — убегает, а после нескольких попыток сдаётся
      ============================================================ */
   var noBtn = document.getElementById('noBtn');
-  var noPhrases = ['не поймаешь', 'ну нет так нет… шутка', 'мимо!', 'даже не пытайся',
-                   'она стесняется', 'почти получилось', 'ещё разок?', 'нажми «Да» :)'];
+  var NO_RUNS = 7;                       // сколько раз убегает до «сдачи»
+  var noPhrases = ['не поймаешь', 'мимо!', 'даже не пытайся', 'она стесняется',
+                   'почти получилось', 'ещё разок?', 'нажми «Да» :)'];
   var noCount = 0;
   var noSpacer = null;
+  var noReady = false;                   // true = кнопка сдалась и стала обычной
+  var readyAt = 0;                       // когда именно сдалась (мс)
+  var answered = false;
+  var lastDodge = 0;
 
   function dodge() {
+    if (answered) return;
+    if (noReady) return;
+    lastDodge = Date.now();
+
+    if (noCount >= NO_RUNS) { surrender(); return; }
+
     var w = noBtn.offsetWidth, h = noBtn.offsetHeight;
 
     if (!noBtn.classList.contains('is-fleeing')) {
@@ -1214,20 +1377,71 @@ var NOTIFY = {
     if (noCount % 2 === 0) showToast(noPhrases[(noCount / 2 - 1) % noPhrases.length]);
   }
 
+  /* кнопка устала бегать и возвращается на своё место */
+  function surrender() {
+    noReady = true;
+    readyAt = Date.now();
+    showToast('ладно, сдаюсь');
+
+    if (noSpacer) {
+      var t = noSpacer.getBoundingClientRect();
+      noBtn.style.left = t.left + 'px';
+      noBtn.style.top = t.top + 'px';
+    }
+
+    window.setTimeout(function () {
+      noBtn.classList.remove('is-fleeing');
+      noBtn.style.left = noBtn.style.top = noBtn.style.width = '';
+      if (noSpacer) { noSpacer.remove(); noSpacer = null; }
+      noBtn.textContent = 'Всё-таки нет';
+      noBtn.classList.add('is-honest');
+    }, 420);
+  }
+
   noBtn.addEventListener('pointerenter', function (e) {
     if (e.pointerType === 'mouse') dodge();
   });
   noBtn.addEventListener('pointerdown', function (e) {
+    if (answered) return;
+    if (noReady) return;              // уже сдалась — пусть нажимается
     e.preventDefault();
     dodge();
   });
   noBtn.addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!noReady || answered) return;
+
+    // то же самое касание, которым кнопка только что сдалась, не считается:
+    // иначе «НЕТ» уходило бы без намерения
+    if (Date.now() - readyAt < 700 || Date.now() - lastDodge < 700) return;
+
+    answered = true;
+    noBtn.disabled = true;
+    yesBtn.disabled = true;
+    noBtn.textContent = 'Отправляю…';
+
+    notify('НЕТ').then(function () {
+      noBtn.textContent = 'Принято';
+      noBtn.style.opacity = '.55';
+      yesBtn.style.opacity = '.4';
+      yesNote.querySelector('p').innerHTML =
+        'Спасибо, что сказала честно.<br>Ничего страшного — в другой раз.';
+      yesNote.classList.add('is-on');
+      yesNote.style.maxHeight = yesNote.scrollHeight + 30 + 'px';
+    });
   });
   window.addEventListener('resize', function () {
-    if (noBtn.classList.contains('is-fleeing')) dodge();
+    if (noBtn.classList.contains('is-fleeing') && !noReady) dodge();
   });
+
+  /* если нажали «Да» — «Нет» тихо уходит */
+  function retireNo() {
+    answered = true;
+    if (noSpacer) { noSpacer.remove(); noSpacer = null; }
+    noBtn.style.display = 'none';
+  }
 
   function burst() {
     var all = ['#st-paw', '#st-heart', '#st-cat', '#st-dog'];
@@ -1287,29 +1501,72 @@ var NOTIFY = {
   });
 
   /* ============================================================
-     СЧЁТЧИК ДНЕЙ
+     ЖИВОЙ СЧЁТЧИК
      ============================================================ */
   var counted = false;
+
   function startCountdown() {
     if (counted) return;
     counted = true;
 
-    var el     = document.getElementById('countdown');
-    var target = new Date('2026-11-01T15:50:00+03:00');
-    var days   = Math.ceil((target - new Date()) / 86400000);
+    var root   = document.getElementById('countdown');
+    var target = new Date('2026-11-01T15:50:00+03:00').getTime();
+    var nums = {}, caps = {}, last = {};
 
-    if (days > 1)        el.textContent = 'до встречи ' + days + ' ' + plural(days);
-    else if (days === 1) el.textContent = 'уже завтра';
-    else if (days === 0) el.textContent = 'сегодня';
-    else                 el.textContent = 'этот вечер уже был';
+    ['d', 'h', 'm', 's'].forEach(function (u) {
+      nums[u] = root.querySelector('[data-u="' + u + '"]');
+      caps[u] = root.querySelector('[data-c="' + u + '"]');
+    });
+
+    var forms = {
+      d: ['день', 'дня', 'дней'],
+      h: ['час', 'часа', 'часов'],
+      m: ['минута', 'минуты', 'минут'],
+      s: ['секунда', 'секунды', 'секунд']
+    };
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function tick() {
+      var diff = target - Date.now();
+
+      if (diff <= 0) {
+        window.clearInterval(timer);
+        root.innerHTML = '<p class="cd-over">этот вечер уже наступил</p>';
+        return;
+      }
+
+      var t = Math.floor(diff / 1000);
+      var v = {
+        d: Math.floor(t / 86400),
+        h: Math.floor((t % 86400) / 3600),
+        m: Math.floor((t % 3600) / 60),
+        s: t % 60
+      };
+
+      ['d', 'h', 'm', 's'].forEach(function (u) {
+        if (last[u] === v[u]) return;
+        last[u] = v[u];
+        nums[u].textContent = pad(v[u]);
+        caps[u].textContent = plural(v[u], forms[u]);
+        if (!calm) {
+          nums[u].classList.remove('bump');
+          void nums[u].offsetWidth;
+          nums[u].classList.add('bump');
+        }
+      });
+    }
+
+    tick();
+    var timer = window.setInterval(tick, 1000);
   }
 
-  function plural(n) {
+  function plural(n, f) {
     var m = Math.abs(n) % 100, k = m % 10;
-    if (m > 10 && m < 20) return 'дней';
-    if (k === 1) return 'день';
-    if (k >= 2 && k <= 4) return 'дня';
-    return 'дней';
+    if (m > 10 && m < 20) return f[2];
+    if (k === 1) return f[0];
+    if (k >= 2 && k <= 4) return f[1];
+    return f[2];
   }
 })();
 </script>
